@@ -1,0 +1,11 @@
+*~
+*.swp
+*.exe
+*.out
+*.pdf
+*.ppt
+*.pptx
+*.bt*
+*__pycache__*
+*.pyc
+*/qualimap_results/*
