@@ -6,6 +6,7 @@ import all_the_games
 import time
 import msvcrt
 import sys
+import os
 
 def initiateGamesList():
 	imp.reload(all_the_games)
@@ -62,6 +63,10 @@ if __name__ == "__main__":
 				print("Now playing {0}".format(gameName))
 		
 		print("not playing any games")
-		command = listenForCommands("type quit to cancel\n", 90)
+		#command = listenForCommands("type quit to cancel\n", 90)
+	fileToSend.close()
+	input('Press ENTER to exit')
+	os.system("pause")
+	print("goodbye")
 				
 				
