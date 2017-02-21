@@ -1,3 +1,4 @@
+#(c) Inne Lemstra 21-02-2017 
 import subprocess
 import re
 import json
@@ -44,7 +45,7 @@ def listenForCommands(prompt, timeout, timer=time.monotonic):
 if __name__ == "__main__":
 	command = ""
 	while not(command == "quit"):
-		fileToSend = open("info.txt","w")		
+		fileToSend = open("info.txt","a")		
 		tasksByte = subprocess.check_output("tasklist")
 		tasks = tasksByte.decode("utf-8").split("\r\n")
 		#tasks_handle = open("example.txt", "r")
@@ -54,19 +55,19 @@ if __name__ == "__main__":
 		## get to the outpur line that is  only ===== === ==
 		tabGaps = [tabGap.start() for tabGap in re.finditer(" ",tasks[2])] 
 		#ending index of Name, IDm sessionName, Sessionnr, memoryUsage
-
+		currentlyPlaying = False
+		
 		for process in tasks:
 			processName = process[:tabGaps[0]].strip() #remove whitspace at the end
 			gameName = exeList.get(processName, False)
 			if gameName:
-		#		fileToSend.write(gameName)
+				fileToSend.write("{0}\t{1}\n".format(gameName, int(time.time())))
 				print("Now playing {0}".format(gameName))
+				currentlyPlaying = True
 		
-		print("not playing any games")
-		#command = listenForCommands("type quit to cancel\n", 90)
+		if not(currentlyPlaying): print("Not playing any games")
+		command = listenForCommands("type quit to stop program\n", 60)
 	fileToSend.close()
-	input('Press ENTER to exit')
-	os.system("pause")
 	print("goodbye")
 				
 				
