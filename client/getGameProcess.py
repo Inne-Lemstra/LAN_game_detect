@@ -9,6 +9,14 @@ import msvcrt
 import sys
 import os
 
+def loadJsonGameList(gameListPath):
+	with open(gameListPath, "r", encoding='utf-8-sig') as gamesListHandle:
+		gameListString = gameListHandle.read()
+	gameListHandle.close()
+	return json.loads(gameListString)
+
+
+
 def initiateGamesList():
 	imp.reload(all_the_games)
 	gameList = all_the_games.initiate() 
@@ -66,7 +74,7 @@ if __name__ == "__main__":
 				currentlyPlaying = True
 		
 		if not(currentlyPlaying): print("Not playing any games")
-		command = listenForCommands("type quit to stop program\n", 60)
+		command = listenForCommands("type quit to stop program\n", 10)
 	fileToSend.close()
 	print("goodbye")
 				
