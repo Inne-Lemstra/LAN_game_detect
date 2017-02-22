@@ -1,5 +1,4 @@
-def initiate():
-	exports =[
+[
 		{
 			"executables": {
 				"win32": [
@@ -3855,5 +3854,4 @@ def initiate():
 			"id": 555,
 			"name": "Duelyst"
 		}
-	]
-	return exports
+]
