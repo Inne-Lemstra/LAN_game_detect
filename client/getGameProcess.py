@@ -3,14 +3,13 @@ import subprocess
 import re
 import json
 import imp
-import all_the_games
 import time
 import msvcrt
 import sys
 import os
 
 def loadJsonGameList(gameListPath):
-	with open(gameListPath, "r", encoding='utf-8-sig') as gamesListHandle:
+	with open(gameListPath, "r", encoding='utf-8-sig') as gameListHandle:
 		gameListString = gameListHandle.read()
 	gameListHandle.close()
 	return json.loads(gameListString)
@@ -18,8 +17,7 @@ def loadJsonGameList(gameListPath):
 
 
 def initiateGamesList():
-	imp.reload(all_the_games)
-	gameList = all_the_games.initiate() 
+	gameList = loadJsonGameList("./all_the_games.txt")
 	exeList = []
 # 	make a list of tuples, tuple contains (exeName, gameName)	
 	for game in gameList:
