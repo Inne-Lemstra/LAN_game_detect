@@ -8,6 +8,7 @@ before_install:
   - sudo add-apt-repository ppa:ubuntu-wine/ppa < travisInputInstall.txt
   - sudo apt-get update
   - ls /etc/dpkg/dpkg.cfg.d/
+  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
   - sudo apt-get install wine1.6 winetricks
   - winetricks python34
   - winetricks python352
