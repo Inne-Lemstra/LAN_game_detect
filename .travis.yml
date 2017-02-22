@@ -5,6 +5,8 @@ python:
   - "3.5.2"
 
 before_install:
+  - sudo add-apt-repository ppa:ubuntu-wine/ppa
+  - sudo apt-get update
   - sudo apt-get install wine1.5
   - winetricks python34
   - winetricks python352
