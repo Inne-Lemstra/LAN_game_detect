@@ -7,6 +7,7 @@ python:
 before_install:
   - sudo add-apt-repository ppa:ubuntu-wine/ppa < travisInputInstall.txt
   - sudo apt-get update
+  - ls /etc/dpkg/dpkg.cfg.d/
   - sudo apt-get install wine1.6 winetricks
   - winetricks python34
   - winetricks python352
