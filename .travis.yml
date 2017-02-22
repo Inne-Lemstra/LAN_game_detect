@@ -1,0 +1,16 @@
+dist: trusty
+language: python
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5.2"
+
+install:
+  - sudo apt-get install wine
+  - winetricks python34
+  - winetricks python352
+
+script:
+  - cd client/
+  - wine ./getGameProcess.py < travisTestInput.txt
+  
