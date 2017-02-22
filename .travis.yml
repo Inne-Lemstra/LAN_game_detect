@@ -1,12 +1,11 @@
 dist: trusty
 language: python
 python:
-  - "3.3"
   - "3.4"
   - "3.5.2"
 
 before_install:
-  - sudo apt-get install wine
+  - sudo apt-get install wine1.5
   - winetricks python34
   - winetricks python352
 
