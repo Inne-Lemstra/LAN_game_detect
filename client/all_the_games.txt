@@ -2515,15 +2515,6 @@
     {
         "executables": {
             "win32": [
-                "MJ.exe"
-            ]
-        },
-        "name": "\u00e3\u201a\u00bb\u00e3\u201a\u00acNET\u00e9\u00ba\u00bb\u00e9\u203a\u20acMJ",
-        "id": 408
-    },
-    {
-        "executables": {
-            "win32": [
                 "ge.exe"
             ]
         },
