@@ -68,12 +68,12 @@ def add(exeDict, gameListJson):
 	return (exeList, gameListJson)
 
 def sendGameStatus(currentlyPlaying):
-	url = 'http://127.0.0.1:5000/'
+	url = 'http://***.***.***.***:5000'
 	files = {'file': currentlyPlaying}
 	try:
 		response = requests.post(url, data = files)
 	except:
-		print("\no connection, but thats ok!")
+		print("\nno connection, but thats ok!")
 		response = "shit ging fout"
 	print("response code is: {0}\n".format(response)) 
 	
