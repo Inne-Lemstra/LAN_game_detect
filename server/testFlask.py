@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from flask import Flask, request
 app = Flask(__name__)
 @app.route('/', methods=['POST'])
@@ -8,4 +9,4 @@ def result():
 	logLANHandle.close()
 	return 'Received !' # response to your request.
 
-app.run(debug = True)
+app.run(host = '***.***.***.***')
