@@ -75,10 +75,14 @@ def sendGameStatus(currentlyPlaying):
 		print("response code is: {0}\n".format(response)) 
 	except:
 		print("\nno connection, but thats ok!")
-	
+
+def printWelcome():
+	print("Initiating getGameProcess written by Inne Lemstra 21-02-2017")
+	print("type \"add\" to add unrecognised exe's to the database\n")
 	
 
 if __name__ == "__main__":
+	printWelcome()
 	command = ""
 	availibleCommands = ["add", "help"]
 	while not(command == "quit"):
