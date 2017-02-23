@@ -2,14 +2,14 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
-buildOptions = dict(packages = [], excludes = [], include_files = ['all_the_games.txt'])
+buildOptions = dict(packages = ['multiprocessing'], excludes = [], include_files = ['all_the_games.txt'])
 includefiles = ['all_the_games.txt']
 
 import sys
 base = 'Win32GUI' if sys.platform=='win32' else None
 
 executables = [
-    Executable('getGameProcess.py')
+    Executable('getGameProcess.py', icon="icon.ico")
 ]
 
 setup(

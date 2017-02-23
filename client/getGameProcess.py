@@ -55,27 +55,26 @@ def help():
 
 def add(exeDict, gameListJson):
 	"""Add a exeName and GameName dictionary to all_the_games so program can recognize games not in the list"""
-	exeName = input("enter exe name or q to cancel")
-	if exeName == "q": return
-	gameName = input("enter game name (use UPPER case for every seperate word) or q to cancel")
-	if gameName == "q": return
+	exeName = input("enter exe name or q to cancel\n")
+	if exeName == "q": return(exeDict, gameListJson)
+	gameName = input("enter game name (use UPPER case for every seperate word) or q to cancel\n")
+	if gameName == "q": return(exeDict, gameListJson)
 	errata = {"executables": {"win32": [exeName]},"id": gameListJson[-1]["id"] + 1, "name": gameName}
 	gameListJson.append(errata)
-	with open("all_the_games.txt", "r") as gameListHandle:
+	with open("all_the_games.txt", "w") as gameListHandle:
 		gameListHandle.write(json.dumps(gameListJson, indent = 4))
 	gameListHandle.close()
 	exeDict[exeName] = gameName
-	return (exeList, gameListJson)
+	return (exeDict, gameListJson)
 
 def sendGameStatus(currentlyPlaying):
-	url = 'http://***.***.***.***:5000'
+	url = 'http://192.168.178.11:5000'
 	files = {'file': currentlyPlaying}
 	try:
 		response = requests.post(url, data = files)
+		print("response code is: {0}\n".format(response)) 
 	except:
 		print("\nno connection, but thats ok!")
-		response = "shit ging fout"
-	print("response code is: {0}\n".format(response)) 
 	
 	
 
@@ -89,7 +88,7 @@ if __name__ == "__main__":
 		#tasks_handle = open("example.txt", "r")
 		#tasks = tasks_handle.readlines()
 
-		(exeList, gamesListJson) = initiateGamesList()
+		(exeDict, gamesListJson) = initiateGamesList()
 		## get to the outpur line that is  only ===== === ==
 		tabGaps = [tabGap.start() for tabGap in re.finditer(" ",tasks[2])] 
 		#ending index of Name, ID, sessionName, Sessionnr, memoryUsage
@@ -97,7 +96,7 @@ if __name__ == "__main__":
 		
 		for process in tasks:
 			processName = process[:tabGaps[0]].strip() #remove whitspace at the end
-			gameName = exeList.get(processName, False)
+			gameName = exeDict.get(processName, False)
 			if gameName:
 				fileToSend.write("{0}\t{1}\n".format(gameName, int(time.time())))
 				print("Now playing {0}".format(gameName))
@@ -111,7 +110,11 @@ if __name__ == "__main__":
 		
 		command = listenForCommands("type quit to stop program\n", 10)
 		if command in availibleCommands:
-			pass
+			if command == "add":
+				(exeDict, gameListJson) = add(exeDict, gamesListJson)
+			if command == "help": help()
+			
+		
 	fileToSend.close()
 	print("goodbye")
 				
