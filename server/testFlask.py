@@ -9,4 +9,4 @@ def result():
 	logLANHandle.close()
 	return 'Received !' # response to your request.
 
-app.run(host = '***.***.***.***')
+app.run(host = '192.168.178.11')
