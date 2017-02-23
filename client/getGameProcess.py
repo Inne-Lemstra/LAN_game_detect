@@ -30,8 +30,8 @@ def initiateGamesList():
                            for exe in exes]
             exeList = exeList + exesAndNames
         
-        exeDict = {i[0]:i[1]for i in exeList}
-        return (exeDict, gameList)
+    exeDict = {i[0]:i[1]for i in exeList}
+    return (exeDict, gameList)
 
 class TimeoutExpired(Exception):
     pass
@@ -83,9 +83,13 @@ def printWelcome():
 if __name__ == "__main__":
     # Add an option to save this or something
     # serverUrl = input("please enter server url")
+    serverUrl = "http://192.168.178.11:5000"
     printWelcome()
     command = ""
     availibleCommands = ["add", "help"]
+    (exeDict, gamesListJson) = initiateGamesList()
+    
+    print("exeDict (main) = {0}".format(exeDict))
     while not(command == "quit"):
         fileToSend = open("info.txt","a")               
         tasksByte = subprocess.check_output("tasklist")
@@ -93,7 +97,7 @@ if __name__ == "__main__":
         #tasks_handle = open("example.txt", "r")
         #tasks = tasks_handle.readlines()
 
-        (exeDict, gamesListJson) = initiateGamesList()
+
         ## get to the outpur line that is  only ===== === ==
         tabGaps = [tabGap.start() for tabGap in re.finditer(" ",tasks[2])] 
         #ending index of Name, ID, sessionName, Sessionnr, memoryUsage
