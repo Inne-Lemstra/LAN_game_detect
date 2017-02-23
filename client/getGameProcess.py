@@ -7,6 +7,7 @@ import time
 import msvcrt
 import sys
 import os
+import requests
 
 def loadJsonGameList(gameListPath):
 	with open(gameListPath, "r", encoding='utf-8-sig') as gameListHandle:
@@ -55,9 +56,9 @@ def help():
 def add(exeDict, gameListJson):
 	"""Add a exeName and GameName dictionary to all_the_games so program can recognize games not in the list"""
 	exeName = input("enter exe name or q to cancel")
-	if exeName == "q": break
+	if exeName == "q": return
 	gameName = input("enter game name (use UPPER case for every seperate word) or q to cancel")
-	if gameName == "q": break
+	if gameName == "q": return
 	errata = {"executables": {"win32": [exeName]},"id": gameListJson[-1]["id"] + 1, "name": gameName}
 	gameListJson.append(errata)
 	with open("all_the_games.txt", "r") as gameListHandle:
@@ -65,7 +66,16 @@ def add(exeDict, gameListJson):
 	gameListHandle.close()
 	exeDict[exeName] = gameName
 	return (exeList, gameListJson)
-	
+
+def sendGameStatus(currentlyPlaying):
+	url = 'http://127.0.0.1:5000/'
+	files = {'file': currentlyPlaying}
+	try:
+		response = requests.post(url, data = files)
+	except:
+		print("\no connection, but thats ok!")
+		response = "shit ging fout"
+	print("response code is: {0}\n".format(response)) 
 	
 	
 
@@ -83,7 +93,7 @@ if __name__ == "__main__":
 		## get to the outpur line that is  only ===== === ==
 		tabGaps = [tabGap.start() for tabGap in re.finditer(" ",tasks[2])] 
 		#ending index of Name, ID, sessionName, Sessionnr, memoryUsage
-		currentlyPlaying = False
+		currentlyPlaying = ""
 		
 		for process in tasks:
 			processName = process[:tabGaps[0]].strip() #remove whitspace at the end
@@ -91,9 +101,14 @@ if __name__ == "__main__":
 			if gameName:
 				fileToSend.write("{0}\t{1}\n".format(gameName, int(time.time())))
 				print("Now playing {0}".format(gameName))
-				currentlyPlaying = True
+				currentlyPlaying += gameName + "\t"
 		
-		if not(currentlyPlaying): print("Not playing any games")
+		if not(currentlyPlaying):
+			print("Not playing any games")
+			currentlyPlaying += "None\t"
+		currentlyPlaying += str(int(time.time())) + "\n"
+		sendGameStatus(currentlyPlaying)
+		
 		command = listenForCommands("type quit to stop program\n", 10)
 		if command in availibleCommands:
 			pass
