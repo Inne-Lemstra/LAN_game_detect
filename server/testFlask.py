@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #(c) Inne Lemstra & Bart Marinissen 24-02-2017
 from flask import Flask, request, render_template
+import time
 app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def result():
@@ -28,8 +29,22 @@ def getLastPlayed():
     # Copy for thread-safety
     return lastPlayed.copy()
 
+def parseGame(lastPlayed = lastPlayed):
+    """parsing the data recieved into dictionary of number of people playing which games currently."""
+    gamesPlayedNow = {}
+    for ip in lastPlayed.keys():
+        data = lastPlayed[ip].strip() #remove \n at the end
+        games = data.split("\t")[:-1]
+        timestamp = int(data.split("\t")[-1])
+        if int(time.time()) - timestamp > 60:
+            #check if data is older then 60 seconds if so don't count this data
+            #(clients have 45 seconds update rate)
+            continue
+        for game in games:
+            gamesPlayedNow[game] = gamesPlayedNow.get(game, 0) + 1:
+    return gamesPlayedNow
 
 
 app.run(host = '192.168.178.11')
-
+    
 
