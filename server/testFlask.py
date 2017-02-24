@@ -19,6 +19,12 @@ def currentlyPlayingPage():
     return render_template('lastPlayed.html', lastPlayed=lastPlayed)
     
 
+@app.route('/whatIsPlayed')
+def currentGamesPage():
+    lastPlayed = getLastPlayed()
+    playedRightNow = parseGames(lastPlayed)
+    return render_template('currentGames.html', playedRightNow = playedRightNow)
+
 # GOD please dont hate me for using a global variable
 # This should be a front-end to a database or something
 lastPlayed = {} # ip-addr -> string
@@ -29,7 +35,7 @@ def getLastPlayed():
     # Copy for thread-safety
     return lastPlayed.copy()
 
-def parseGame(lastPlayed = lastPlayed):
+def parseGames(lastPlayed = lastPlayed):
     """parsing the data recieved into dictionary of number of people playing which games currently."""
     gamesPlayedNow = {}
     for ip in lastPlayed.keys():
@@ -41,7 +47,7 @@ def parseGame(lastPlayed = lastPlayed):
             #(clients have 45 seconds update rate)
             continue
         for game in games:
-            gamesPlayedNow[game] = gamesPlayedNow.get(game, 0) + 1:
+            gamesPlayedNow[game] = gamesPlayedNow.get(game, 0) + 1
     return gamesPlayedNow
 
 
