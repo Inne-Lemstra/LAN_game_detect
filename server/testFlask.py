@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#(c) Inne Lemstra & Bart Marinissen 24-02-2017
 from flask import Flask, request, render_template
 app = Flask(__name__)
 @app.route('/', methods=['POST'])

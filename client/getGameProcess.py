@@ -1,4 +1,4 @@
-#(c) Inne Lemstra 21-02-2017 
+#(c) Inne Lemstra 21-02-2017 with advice from Bart Marinissen
 import subprocess
 import re
 import json
