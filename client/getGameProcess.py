@@ -2,11 +2,9 @@
 import subprocess
 import re
 import json
-import imp
 import time
 import msvcrt
 import sys
-import os
 import requests
 
 def loadJsonGameList(gameListPath):
@@ -51,7 +49,11 @@ def listenForCommands(prompt, timeout, timer=time.monotonic):
 
 def help():
         """Print documentation to screen, so user can see what all the availible commands do"""
-        print("this is going to be a help function")    
+        print("possible commands:")
+        print("add \t to add a missing exe:gameName entry to the database")
+        print("quit\t close the program")
+        print("help\t This")
+        print()
 
 def add(exeDict, gameListJson):
     """Add a exeName and GameName dictionary to all_the_games so program can recognize games not in the list"""
@@ -59,7 +61,7 @@ def add(exeDict, gameListJson):
     if exeName == "q": return(exeDict, gameListJson)
     gameName = input("enter game name (use UPPER case for every seperate word) or q to cancel\n")
     if gameName == "q": return(exeDict, gameListJson)
-    errata = {"executables": {"win32": [exeName]},"id": gameListJson[-1]["id"] + 1, "name": gameName}
+    errata = {"executables": {"win32": [exeName]}, "name": gameName} # "id": gameListJson[-1]["id"] + 1} #this is the old list
     gameListJson.append(errata)
     with open("all_the_games.txt", "w") as gameListHandle:
             gameListHandle.write(json.dumps(gameListJson, indent = 4))
@@ -76,22 +78,26 @@ def sendGameStatus(currentlyPlaying, url):
             print("\nno connection, but thats ok!")
 
 def printWelcome():
-    print("Initiating getGameProcess written by Inne Lemstra 21-02-2017")
-    print("type \"add\" to add unrecognised exe's to the database\n")
+    print("Initiating getGameProcess")
+    print("\t\t\twritten by Inne Lemstra 21-02-2017")
+    print("type \"help\" to see all posible commands\n")
         
 
 if __name__ == "__main__":
     # Add an option to save this or something
     # serverUrl = input("please enter server url")
-    serverUrl = "http://192.168.178.11:5000"
+    with open("config.ini", "r") as configHandle:
+        config = json.load(configHandle)
+    configHandle.close()
+    fileToSend = open("info.txt","a") 
+    serverUrl = "http://" + config["serverUrl"]
     printWelcome()
     command = ""
     availibleCommands = ["add", "help"]
     (exeDict, gamesListJson) = initiateGamesList()
     
-    print("exeDict (main) = {0}".format(exeDict))
     while not(command == "quit"):
-        fileToSend = open("info.txt","a")               
+        
         tasksByte = subprocess.check_output("tasklist")
         tasks = tasksByte.decode("utf-8").split("\r\n")
         #tasks_handle = open("example.txt", "r")
@@ -117,7 +123,7 @@ if __name__ == "__main__":
         currentlyPlaying += str(int(time.time())) + "\n"
         sendGameStatus(currentlyPlaying, serverUrl)
         
-        command = listenForCommands("type quit to stop program\n", 10)
+        command = listenForCommands("type quit to stop program\n", 30)
         if command in availibleCommands:
             if command == "add":
                 (exeDict, gameListJson) = add(exeDict, gamesListJson)

@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
-buildOptions = dict(packages = ['multiprocessing'], excludes = [], include_files = ['all_the_games.txt'])
+buildOptions = dict(packages = ['multiprocessing'], excludes = [], include_files = ['all_the_games.txt', 'config.ini'])
 includefiles = ['all_the_games.txt']
 
 import sys
